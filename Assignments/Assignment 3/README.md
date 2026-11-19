@@ -1,0 +1,2 @@
+# Assignment 3 CO3
+Based on Assignment CO3 Java.pdf. CO3Solutions.java implements examples for Q1-Q7, including completed TODOs. Answers.md explains exception handling, resources, thread lifecycle, synchronization, deadlock and experiments. Compile javac CO3Solutions.java; run java CO3Solutions. Thread completion order and timing are nondeterministic; record repeated local runs.
