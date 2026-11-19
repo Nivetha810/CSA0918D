@@ -1,0 +1,13 @@
+# CO4 – Answers for Tasks 1–6
+
+Task 1: defects include UI containing validation/business/SQL; action command compared by reference; invalid input unchecked; SQL concatenation injection; JDBC and sleep block event-dispatch thread; no user feedback; Receipt has no behaviour; resources not closed; checked exceptions unhandled; no close policy. FeeService separates validation. Production JDBC needs PreparedStatement, try-with-resources and SwingWorker. Per-button listeners avoid k comparisons; O(1) dispatch and O(k) listener space.
+
+Task 2: Patient ID JTextField → ActionEvent/ActionListener → validate. Department JComboBox → ItemEvent/ItemListener → refresh doctor list. Doctor and slot selections update state. Book JButton → validate and book, then confirmation/error. Window close → WindowEvent/WindowListener; confirm if booking pending. JFrame contains patient panel, department/doctor/slot panel, buttons/status. Cache Map<Department,List<Doctor>> gives O(1) lookup plus O(m_d) populate and O(m) memory. DB fetch per change adds network/query latency but avoids cache. JFrame creates controls/registers listeners/visible; close event confirms then disposes. Applet init/start/paint/stop/destroy differs from JFrame lifecycle.
+
+Task 3: JFrame BorderLayout; north search row FlowLayout; center JScrollPane/JTable grows; south controls FlowLayout; status row at page end. Nested panels isolate fixed rows while CENTER grows. CO4Solutions implements screen. Test small/default/large sizes and attach screenshots. GridBagLayout is flexible but more constraints; absolute positioning breaks resize.
+
+Task 4: mouseclicked is wrong case; mouseClicked is required. @Override makes compiler catch typo. getGraphics draws transient pixels lost on repaint. Store Points, draw in paintComponent, update label and repaint. CO4Solutions.DrawPad persists points. Redraw O(n); BufferedImage uses O(width×height) pixels.
+
+Task 5: Frame ActionListener couples frame/handler; named inner class reusable; anonymous class local; lambda concise. Reuse same listener for button and Enter key; show result dialog. Method reference or shared Action can serve button/menu/key binding. Converter uses one lambda for button and Enter.
+
+Task 6: students register; committee views/filters/exports. Require ID/event, unique student/event, clear errors, loading never blocks EDT, paging for large results. Layers: JFrame view → service validation → DAO JDBC. DB unique constraint on student_id,event_name is final duplicate guard. Register validates then SwingWorker calls DAO; Filter queries in SwingWorker and updates JTable in done. Page with LIMIT/OFFSET. Loading 100k at once uses O(n) UI memory and may freeze EDT; paging bounds UI memory to O(page size).
