@@ -1,0 +1,19 @@
+# CO5 – Answers for Tasks A1–A5 and B1–B4
+
+A1: Text field order: passId, registerNo, name, routeNo, boardingStop, validityDate, amount. Escape commas/quotes using CSV quoting, not naive split. Binary DataOutputStream order: UTF passId, UTF registerNo, UTF name, int routeNo, UTF boardingStop, long validityEpochDay, double amount. BufferedWriter append for add; BufferedReader line scan for find/list. Validate field count and numeric/date fields; quarantine malformed rows. Missing file: create for add, report not-found for read. Power failure: write temp then atomic rename or use checksummed append records. RandomAccessFile seek is O(1) only when record index known; finding by ID remains O(n) without index.
+
+A2: 50 MiB byte-at-a-time means about 52,428,800 Java read calls; a 4 KiB buffer needs about 12,800 buffer fills. Exact OS calls depend on JVM/filesystem. Buffering adds little for tiny in-memory data or already-buffered sources. Files.readAllLines is O(file size) time and memory; streaming is O(file size) time and O(buffer/line) memory.
+
+A3: Common DAO steps: connect, bind, execute, map ResultSet, close resources. Differences are SQL/table/key/object mapping. Generic Dao<T,K> offers insert/findById/findAll/update/delete; StudentDao maps Student(id,name,email) to student table with id primary key. SQL in GUI duplicates schema knowledge. Runtime query cost essentially unchanged.
+
+A4: Hostel→Room→Resident graph is serialized recursively. Mark live Connection transient; password should not be serialized (store salted password hash separately). Static fields are not serialized. Define serialVersionUID. Adding field with compatible UID normally reads old stream with default value (null/0), requiring migration/defaulting; incompatible UID throws InvalidClassException. CSV/JSON is portable and schema-evolvable but needs mapping; Java serialization is Java-specific and should not read untrusted streams.
+
+A5: Disable auto-commit; debit source with sufficient-balance predicate; credit destination; commit only if both update counts are 1; rollback on any failure; restore auto-commit. Separate auto-commit statements can leave source debited if credit fails. Injection payload such as quote OR true can alter concatenated SQL. PreparedStatement binds ID and password as values. Production authentication must compare salted password hashes.
+
+B1: PassStore add/find and buffered line counter implement the file-store core. Sample skips damaged lines with wrong field count. Test normal ID, absent ID, malformed count, nonnumeric route/amount, empty line and missing file. Benchmark 1/10/50 MB and 1k/10k/100k lookups locally. No timings fabricated. Repeated scans O(n); load once into HashMap gives O(n) build and O(1) average lookup, O(n) memory.
+
+B2: Use SQL injection string ' OR '1'='1' -- against unsafe local-only login and verify PreparedStatement rejects it. Corrupt-file tests: wrong field count, nonnumeric route/amount, empty line and delimiter in name. Escaping/regex is weaker than parameter binding.
+
+B3: Create bus_pass table from schema.sql. Compare 10, 1k, 10k and 100k inserts; use SELECT and ResultSetMetaData to verify columns/types. PreparedStatement reuses parameterized SQL; batch reduces round trips. Disable auto-commit, batch, commit once; forced invalid row must rollback. CO5Solutions.loadBatch demonstrates transaction/batching every 1,000 rows. Nightly 100k import: PreparedStatement batches; one counter pass: one PreparedStatement execution.
+
+B4: At 12 campuses and 100× volume with concurrent counters, relational database is appropriate: indexed lookup, transactions, constraints and concurrent connections. Migration validates each file row, batches valid rows and reports rejects. DatabaseMetaData reports product/driver/tables. Separate serialized files require cross-campus search and merge/conflict handling. Benchmark local MySQL and record product/driver version before final decision.
