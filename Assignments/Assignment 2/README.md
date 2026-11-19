@@ -1,0 +1,2 @@
+# Assignment 2 CO2
+Based on Assignment CO2 Java.pdf. CO2Solutions.java contains Q1-Q7 implementations and measurement harnesses. Answers.md contains complexity and design explanations. Compile with javac CO2Solutions.java; run java CO2Solutions. Measurements vary by machine; collect and report your own repeated averages.
