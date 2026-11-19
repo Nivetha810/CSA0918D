@@ -1,0 +1,15 @@
+# CO3 – Answers for Q1–Q7
+
+Q1 ATM: nonnumeric input is NumberFormatException (unchecked); negative amount is IllegalArgumentException (unchecked); insufficient funds is a domain checked exception; missing card file is FileNotFoundException (checked); device I/O is checked; JVM resource exhaustion is Error. Catch narrow exceptions before broad ones. finally runs on normal/exceptional completion except abrupt JVM termination. Catch(Exception) can be a final logging boundary but loses precise recovery.
+
+Q2 custom exceptions: ExamException is checked so callers handle policy failures; SubmissionStorageException adds storage context and preserves IOException as cause. Storage example reproduces the expected output. Propagation is storage → service → controller → user-safe message. Without cause, getCause is null and disk quota detail is lost. Unchecked exceptions remove compile-time handling requirement. Stack traces allocate per throwable.
+
+Q3 resources: every reader/writer must close if parsing fails. Manual close on normal path leaks on exceptions. try-with-resources closes in reverse declaration order and preserves close failures as suppressed exceptions. It does not validate corrupt data or guarantee atomic replacement; write temp, validate, then atomic move.
+
+Q4 thread lifecycle: NEW → RUNNABLE → BLOCKED/WAITING/TIMED_WAITING → RUNNABLE → TERMINATED. Runnable separates task from thread; extending Thread couples them. start schedules a new thread; run is an ordinary call. join waits for workers. Scheduler makes finish order nondeterministic; priorities are hints. ExecutorService limits active workers and queues tasks.
+
+Q5 race: check-then-set is the critical section. Two threads can both observe false before either writes true. synchronized book makes it atomic on the SeatBooking monitor. Program launches 100 contenders for 10 seats and expects exactly 10. AtomicBoolean.compareAndSet is a lock-free alternative with one atomic object per seat. Use one lock per screen to reduce contention.
+
+Q6 deadlock: mutual exclusion, hold-and-wait, no preemption and circular wait are the four conditions. Prevent transfer deadlock by acquiring account locks in globally consistent ID order. TokenCounter uses a bounded circular buffer; wait is inside while because of spurious wakeups/competition; notifyAll wakes producers and consumers. wait releases monitor; sleep does not. ArrayBlockingQueue(capacity 5) is simpler.
+
+Q7 processor: use ExecutorService, Callable, Future, bounded pool, per-file exception handling and concurrent result queues/counters. One corrupt file is recorded without stopping others. Program generates sample score files and reports success/failure. Benchmark pool sizes 1,2,4,8; I/O may stop improving due to disk throughput. Parallel streams share common pool; one thread per file risks stack and scheduler overhead.
