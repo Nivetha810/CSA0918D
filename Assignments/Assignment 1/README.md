@@ -1,0 +1,2 @@
+# Assignment 1 CO1
+Based on CO1 JAVA.pdf. Java 17+. Compile: javac ParkingFacility.java FeeDemo.java SmartParkingSystem.java. Run each class. Answers.md contains responses for Tasks 1-12. Run locally and add your own screenshots and measured evidence.
