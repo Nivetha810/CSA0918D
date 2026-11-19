@@ -1,0 +1,19 @@
+import java.util.*;
+public class CO2Solutions{
+ static volatile Object sink;
+ static String plus(String[]a){String s="";for(String x:a)s+=x+"|";return s;}
+ static String builder(String[]a){StringBuilder b=new StringBuilder();for(String x:a)b.append(x).append('|');return b.toString();}
+ static String buffer(String[]a){StringBuffer b=new StringBuffer();for(String x:a)b.append(x).append('|');return b.toString();}
+ static void q1(){for(int n:new int[]{5,50,500}){String[]a=new String[n];Arrays.fill(a,"field");for(int k=0;k<3;k++){long t=System.nanoTime();for(int i=0;i<100;i++)sink=k==0?plus(a):k==1?builder(a):buffer(a);System.out.println("Q1 n="+n+" mode="+k+" ns="+(System.nanoTime()-t));}}}
+ static void q2(){for(int n:new int[]{1000,10000,50000}){List<Integer>a=new ArrayList<>(),l=new LinkedList<>();long t=System.nanoTime();for(int i=0;i<n;i++)a.add(i);long at=System.nanoTime()-t;t=System.nanoTime();for(int i=0;i<n;i++)l.add(i);long lt=System.nanoTime()-t;t=System.nanoTime();for(int i=0;i<1000;i++)sink=a.get(n/2);long ag=System.nanoTime()-t;t=System.nanoTime();for(int i=0;i<1000;i++)sink=l.get(n/2);long lg=System.nanoTime()-t;System.out.println("Q2 "+n+" ArrayList add/get "+at+"/"+ag+" LinkedList "+lt+"/"+lg);}Deque<String>d=new ArrayDeque<>();d.addFirst("urgent");d.addLast("later");System.out.println(d);}
+ record Student(String reg,String name){public boolean equals(Object o){return o instanceof Student s&&reg.equals(s.reg);}public int hashCode(){return Objects.hash(reg);}}
+ static void q3(){Set<Student>s=new HashSet<>();s.add(new Student("192311001","Arun"));s.add(new Student("192311002","Divya"));s.add(new Student("192311001","Arun"));System.out.println("Unique students: "+s.size());}
+ static void q4(){for(int n:new int[]{1000,10000,100000}){Map<String,Integer>h=new HashMap<>(),t=new TreeMap<>(),l=new LinkedHashMap<>();for(int i=0;i<n;i++){String k=String.format("M%07d",i);h.put(k,i);t.put(k,i);l.put(k,i);}long st=System.nanoTime();for(int i=0;i<100000;i++)sink=h.get(String.format("M%07d",i%n));long ht=System.nanoTime()-st;st=System.nanoTime();for(int i=0;i<100000;i++)sink=t.get(String.format("M%07d",i%n));System.out.println("Q4 n="+n+" hash="+ht+" tree="+(System.nanoTime()-st)+" ns; sorted first="+t.keySet().iterator().next()+" insertion first="+l.keySet().iterator().next());}}
+ record Team(String name,int points,int gd){public String toString(){return name+"("+points+","+gd+")";}}
+ static class Leaderboard<T>{final List<T>items=new ArrayList<>();final Comparator<? super T>cmp;Leaderboard(Comparator<? super T>c){cmp=c;}void add(T x){items.add(x);}List<T>ranking(){List<T>x=new ArrayList<>(items);x.sort(cmp);return x;}}
+ static void q5(){Comparator<Team>c=Comparator.comparingInt(Team::points).reversed().thenComparing(Comparator.comparingInt(Team::gd).reversed()).thenComparing(Team::name);Leaderboard<Team>b=new Leaderboard<>(c);b.add(new Team("Panthers",9,4));b.add(new Team("Eagles",9,6));b.add(new Team("Cobras",6,1));b.add(new Team("Bisons",9,4));System.out.println(b.ranking());}
+ record Patient(String name,int severity,long arrival){public String toString(){return name+"(S"+severity+")";}}
+ static void q6(){PriorityQueue<Patient>q=new PriorityQueue<>(Comparator.comparingInt(Patient::severity).thenComparingLong(Patient::arrival));String[]n={"Ravi","Meena","John","Asha","Kumar","Lata"};int[]s={3,1,3,5,1,2};for(int i=0;i<n.length;i++)q.add(new Patient(n[i],s[i],i));while(!q.isEmpty())System.out.print(q.poll()+" ");System.out.println();}
+ static void q7(){Deque<String>upNext=new ArrayDeque<>();upNext.addLast("Track A");upNext.addLast("Track B");upNext.addFirst("Urgent");System.out.println("Up Next redesign "+upNext);}
+ public static void main(String[]a){q1();q2();q3();q4();q5();q6();q7();}
+}
