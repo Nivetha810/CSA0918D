@@ -1,0 +1,2 @@
+# Assignment 5 CO5
+Based on Assignment CO5 Java.pdf. CO5Solutions.java implements the file-store, buffered counting, generic DAO, serialization and JDBC transaction/batch examples. schema.sql creates the MySQL tables. Answers.md contains Part A pseudocode and Part B experiment plans. Java 17+. JDBC requires MySQL Connector/J and a local database; do not commit credentials. Collect your own timings.
