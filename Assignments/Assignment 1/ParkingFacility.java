@@ -1,0 +1,7 @@
+public class ParkingFacility {
+ private final String[][] slots;
+ public ParkingFacility(int[] sizes){if(sizes==null)throw new IllegalArgumentException();slots=new String[sizes.length][];for(int i=0;i<sizes.length;i++){if(sizes[i]<0)throw new IllegalArgumentException();slots[i]=new String[sizes[i]];}}
+ public int[] allocate(String v){if(v==null||v.isBlank())throw new IllegalArgumentException();for(int f=0;f<slots.length;f++)for(int s=0;s<slots[f].length;s++)if(slots[f][s]==null){slots[f][s]=v;return new int[]{f,s};}return null;}
+ public boolean release(int f,int s){if(f<0||f>=slots.length||s<0||s>=slots[f].length||slots[f][s]==null)return false;slots[f][s]=null;return true;}
+ public static void main(String[]a){ParkingFacility p=new ParkingFacility(new int[]{2,1});System.out.println(java.util.Arrays.toString(p.allocate("TN01AB1111")));System.out.println(java.util.Arrays.toString(p.allocate("TN02CD2222")));System.out.println(java.util.Arrays.toString(p.allocate("TN03EF3333")));System.out.println(java.util.Arrays.toString(p.allocate("TN04GH4444")));System.out.println(p.release(0,1)+" "+p.release(0,1)+" "+p.release(5,0));System.out.println(java.util.Arrays.toString(p.allocate("TN04GH4444")));}
+}
