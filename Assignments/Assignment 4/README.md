@@ -1,0 +1,2 @@
+# Assignment 4 CO4
+Based on Assignment CO4 Java.pdf. CO4Solutions.java contains Swing demos for Tasks 1.2, 3, 4, 5 and an event-registration sample for Task 6; Answers.md includes the Task 2 design and all analysis. Requires Java 17 and a desktop session. Compile javac CO4Solutions.java; run java CO4Solutions and choose a demo. Task 6 JDBC deployment requires MySQL Connector/J and configured database credentials.
